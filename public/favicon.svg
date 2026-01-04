@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    text { font-size: 80px; font-family: monospace; font-weight: bold; fill: #00ff9d; }
+    rect { fill: #111; }
+  </style>
+  <rect x="0" y="0" width="100" height="100" rx="20" />
+  <text x="50" y="80" text-anchor="middle">_/</text>
+</svg>

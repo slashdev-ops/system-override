@@ -1,0 +1,121 @@
+<div id="canvas-container" class="fixed top-0 left-0 w-full h-full -z-10 opacity-0 transition-opacity duration-1000 bg-[#030303]"></div>
+
+<script>
+  import * as THREE from 'three';
+
+  const container = document.getElementById('canvas-container');
+
+  if (container) {
+    // OPTYMALIZACJA 1: Mniejsza scena, ale bardziej stylowa
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x030303, 0.002); // Głębsza czerń
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    // Kamera wyżej i pod kątem, żeby wyglądało to jak skan terenu
+    camera.position.set(0, 15, 30);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ 
+        alpha: true, 
+        antialias: false, // WYŁĄCZAMY antyaliasing dla wydajności i efektu "retro"
+        powerPreference: "high-performance"
+    });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    // OPTYMALIZACJA 2: Sztywny PixelRatio = 1. To ratuje laptopy z ekranami 4K/Retina.
+    renderer.setPixelRatio(1); 
+    container.appendChild(renderer.domElement);
+
+    // OPTYMALIZACJA I ESTETYKA: Teren zamiast szumu
+    const geometry = new THREE.BufferGeometry();
+    const count = 5000; // Optymalna ilość
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+
+    const width = 200;
+    const depth = 200;
+
+    for(let i = 0; i < count * 3; i+=3) {
+        // Rozkładamy punkty w siatce, ale z lekkim chaosem
+        const x = (Math.random() - 0.5) * width;
+        const z = (Math.random() - 0.5) * depth;
+        
+        // MATEMATYKA TOPOGRAFII: Suma fal tworzy "góry"
+        // To wygląda jak prawdziwy skan terenu z drona
+        const y = (Math.sin(x / 15) * Math.cos(z / 15)) * 3 + 
+                  (Math.sin(x / 40) + Math.cos(z / 40)) * 5 - 10;
+        
+        positions[i] = x;
+        positions[i+1] = y;
+        positions[i+2] = z;
+
+        // KOLORYSTYKA RADAROWA:
+        // Im wyżej (Y), tym jaśniej. Dół jest ciemny.
+        const intensity = (y + 10) / 10; // Normalizacja wysokości
+        colors[i] = 0;   
+        colors[i+1] = intensity * 0.8 + 0.1; // Green channel
+        colors[i+2] = intensity * 0.4;       // Blue channel
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    
+    const material = new THREE.PointsMaterial({ 
+        size: 0.35, // Nieco większe punkty
+        vertexColors: true, 
+        transparent: true, 
+        opacity: 0.8,
+        sizeAttenuation: true
+    });
+    
+    const terrain = new THREE.Points(geometry, material);
+    scene.add(terrain);
+
+    // MYSZKA: Subtelny paralaks
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetX = 0;
+    let targetY = 0;
+
+    const windowHalfX = window.innerWidth / 2;
+    const windowHalfY = window.innerHeight / 2;
+
+    document.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX - windowHalfX) * 0.001;
+        mouseY = (event.clientY - windowHalfY) * 0.001;
+    }, { passive: true }); // passive dla wydajności scrolla
+
+    // PĘTLA ANIMACJI (Zoptymalizowana)
+    const animate = () => {
+        requestAnimationFrame(animate);
+        
+        // OPTYMALIZACJA 4: Zamiast pętli `for` po punktach, obracamy cały obiekt (GPU lubi to)
+        terrain.rotation.y += 0.001; 
+
+        // Płynna interpolacja kamery (Lerp)
+        targetX = mouseX * 2;
+        targetY = mouseY * 2;
+        
+        camera.rotation.x += 0.05 * ( targetY - camera.rotation.x );
+        camera.rotation.y += 0.05 * ( targetX - camera.rotation.y );
+
+        renderer.render(scene, camera);
+    };
+
+    animate();
+
+    // Pokazujemy canvas dopiero jak jest gotowy
+    setTimeout(() => container.style.opacity = '0.6', 100); // 0.6 opacity dla subtelności
+
+    // Debounce resize (żeby nie przeliczać przy każdym pikselu zmiany okna)
+    let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
+    window.addEventListener('resize', () => {
+        if (resizeTimeout) clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }, 100);
+    });
+  }
+</script>

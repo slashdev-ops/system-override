@@ -1,0 +1,160 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import TelemetrySidebar from '../components/TelemetrySidebar.tsx';
+import HapticButton from '../components/HapticButton.tsx';
+import ScrambleText from '../components/ScrambleText.tsx';
+import SpotlightCard from '../components/SpotlightCard.tsx';
+
+// DANE KART
+const CARDS = [
+  {
+    id: "01",
+    serial: "K8S-OPS-ALPHA",
+    category: "CLOUD_INFRA",
+    status: "ONLINE",
+    title: "DevOps Core",
+    desc: "Architektura Kubernetes, Terraform IaC, AWS/Azure. Skalowalność i auto-healing.",
+    tags: ["K8S", "AWS", "CI/CD"],
+    icon: "➜",
+    link: "#capabilities"
+  },
+  {
+    id: "02",
+    serial: "PCB-REV-ENG-X",
+    category: "SILICON_ENG",
+    status: "DIAGNOSING",
+    title: "Hardware Labs",
+    desc: "Reverse Engineering, Mikrolutowanie BGA, Analiza systemów wbudowanych (Embedded).",
+    tags: ["STM32", "BGA", "IPC"],
+    icon: "➜",
+    link: "#capabilities"
+  },
+  {
+    id: "03",
+    serial: "UAV-THERMAL-V5",
+    category: "AERIAL_INTEL",
+    status: "REC ⭐",
+    title: "Drone Operations",
+    desc: "Inspekcje termowizyjne, Fotogrametria, Pomiary z powietrza. Certyfikat NSTS-05.",
+    special: true,
+    tags: ["THERMAL", "NSTS-05", "UAV"],
+    icon: "➜",
+    link: "/mission"
+  },
+  {
+    id: "04",
+    serial: "BACKEND-HI-LOAD",
+    category: "LOGIC_SYSTEMS",
+    status: "COMPILING",
+    title: "Software Eng.",
+    desc: "Systemy High-Performance (Python/Go/Java). Architektura Mission-Critical.",
+    tags: ["PYTHON", "JAVA", "GO"],
+    icon: "➜",
+    link: "#capabilities"
+  }
+];
+---
+
+<MainLayout title="SLASHDEV | FULL-SPECTRUM ENGINEERING">
+    
+    <TelemetrySidebar client:only="react" side="left" />
+    <TelemetrySidebar client:only="react" side="right" />
+    <HapticButton client:load />
+
+    <main class="relative z-10 px-6 max-w-[1400px] mx-auto flex flex-col pt-40" transition:animate="slide">
+        
+        <section class="pb-20">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-12">
+                <div class="max-w-4xl">
+                    <h1 class="text-6xl md:text-9xl font-bold text-white uppercase leading-[0.85] tracking-tighter mb-8 mix-blend-difference">
+                        <ScrambleText client:load text="SYSTEM" className="block text-gray-500" />
+                        <ScrambleText client:load text="OVERRIDE" className="block text-[#00ff9d]" />
+                    </h1>
+                    
+                    <p class="text-gray-300 font-mono text-xs md:text-sm max-w-xl border-l border-[#00ff9d] pl-6 py-2 leading-relaxed bg-black/40 backdrop-blur-sm">
+                        <strong>SlashDev</strong>. Inżynieria Full-Spectrum.<br>
+                        Łączymy DevOps, Elektronikę i Analizę Danych w jeden ekosystem.
+                    </p>
+                </div>
+
+                <div>
+                     <a href="#contact" class="pointer-events-auto inline-flex items-center justify-center px-10 py-5 bg-[#00ff9d] text-black font-bold font-mono text-xs hover:bg-white hover:scale-105 transition-all duration-300 tracking-widest shadow-[0_0_20px_rgba(0,255,157,0.4)]">
+                        INIT_CONTACT
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="capabilities" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pb-32">
+            {CARDS.map(card => (
+                <a href={card.link} class="block h-full relative group">
+                    
+                    {/* SpotlightCard odpowiada teraz za ramkę i efekty. Przekazujemy 'mode' */}
+                    <SpotlightCard 
+                        client:load 
+                        mode={card.special ? 'orange' : 'default'} 
+                        className="h-80 flex flex-col justify-between"
+                    >
+                        
+                        {/* NAGŁÓWEK TECHNICZNY */}
+                        <div class="p-6 pb-0 flex justify-between items-start font-mono text-[9px] tracking-widest uppercase">
+                            <div class="flex flex-col gap-1">
+                                <span class={card.special ? 'text-orange-500' : 'text-[#00ff9d]'}>// {card.id}_{card.category}</span>
+                                <span class="text-gray-600 group-hover:text-gray-400 transition-colors">SN: {card.serial}</span>
+                            </div>
+                            <div class={`px-2 py-1 border ${card.special ? 'border-orange-500/50 text-orange-400 animate-pulse' : 'border-[#00ff9d]/30 text-[#00ff9d] animate-blink-soft'} bg-black/50 backdrop-blur-md`}>
+                                STATUS: {card.status}
+                            </div>
+                        </div>
+
+                        {/* TREŚĆ KARTY */}
+                        <div class="p-6 pt-4 flex-1">
+                            <h2 class="text-3xl text-white font-bold mb-3 tracking-tight group-hover:translate-x-1 transition-transform duration-300">{card.title}</h2>
+                            <p class="text-gray-400 text-xs leading-relaxed border-l border-white/10 pl-4 group-hover:border-[#00ff9d]/50 transition-colors">
+                                {card.desc}
+                            </p>
+                        </div>
+
+                        {/* STOPKA (TAGI + STRZAŁKA) */}
+                        <div class="p-6 pt-0 flex justify-between items-end">
+                            <div class="flex gap-2 font-mono text-[9px]">
+                                {card.tags.map(tag => (
+                                    <span class={`px-2 py-1 border ${card.special ? 'border-orange-500/20 bg-orange-500/5 text-orange-400' : 'border-white/10 bg-white/5 text-gray-400 group-hover:border-[#00ff9d]/20 group-hover:text-[#00ff9d]'} transition-colors`}>
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                            <div class={`w-8 h-8 border ${card.special ? 'border-orange-500/30 text-orange-500 group-hover:bg-orange-500' : 'border-[#00ff9d]/30 text-[#00ff9d] group-hover:bg-[#00ff9d]'} rounded-full flex items-center justify-center group-hover:text-black transition-all duration-300 group-hover:scale-110 shadow-[0_0_10px_rgba(0,0,0,0.5)]`}>
+                                <span class="text-xs">{card.icon}</span>
+                            </div>
+                        </div>
+
+                    </SpotlightCard>
+                </a>
+            ))}
+        </section>
+
+        <section id="contact" class="pb-20 max-w-3xl mx-auto w-full">
+            <div class="bg-[#050505] border-t border-b border-[#00ff9d]/20 p-12 relative">
+                <h3 class="font-mono text-[#00ff9d] text-xs mb-8 text-center uppercase tracking-[0.3em]">// Secure_Channel</h3>
+                
+                <form action="https://formspree.io/f/mzdzjynl" method="POST" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" name="name" placeholder="ID (NAME)" class="w-full bg-[#111] border-none p-4 text-white font-mono text-xs focus:ring-1 focus:ring-[#00ff9d] transition" required>
+                        <input type="email" name="email" placeholder="LINK (EMAIL)" class="w-full bg-[#111] border-none p-4 text-white font-mono text-xs focus:ring-1 focus:ring-[#00ff9d] transition" required>
+                    </div>
+                    <textarea name="message" rows="4" placeholder="MESSAGE DATA..." class="w-full bg-[#111] border-none p-4 text-white font-mono text-xs focus:ring-1 focus:ring-[#00ff9d] transition" required></textarea>
+                    
+                    <button type="submit" class="w-full bg-[#00ff9d] text-black py-4 font-bold font-mono text-sm hover:bg-white transition duration-300 tracking-widest uppercase">
+                        TRANSMIT
+                    </button>
+                </form>
+            </div>
+            
+            <footer class="text-center mt-20 text-gray-600 font-mono text-[10px]">
+                <div>© 2025 SLASHDEV. ZERO TRUST ARCHITECTURE.</div>
+            </footer>
+        </section>
+
+    </main>
+</MainLayout>
