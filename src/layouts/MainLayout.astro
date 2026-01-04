@@ -3,6 +3,7 @@ import '../styles/base.css';
 import { ClientRouter } from 'astro:transitions';
 import TerminalOverlay from '../components/TerminalOverlay.tsx';
 import LidarBackground from '../components/LidarBackground.astro';
+import { Analytics } from '@vercel/analytics/react';
 
 interface Props {
 	title: string;
@@ -64,6 +65,8 @@ const { title } = Astro.props;
         </div>
 
 		<slot />
+        
+        <Analytics client:load />
 
         <script>
             import { playSound, toggleMute } from '../utils/SoundController';
