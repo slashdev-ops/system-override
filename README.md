@@ -1,43 +1,50 @@
-# Astro Starter Kit: Minimal
+# SLASHDEV | SYSTEM OVERRIDE
 
-```sh
-npm create astro@latest -- --template minimal
-```
+> Interactive Engineering Portfolio featuring Lidar simulation, Mathematical Sound Synthesis, and Layered UI Architecture.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+![System Status](https://img.shields.io/badge/SYSTEM-ONLINE-00ff9d?style=for-the-badge)
+![Tech Stack](https://img.shields.io/badge/ASTRO-REACT-orange?style=for-the-badge)
 
-## 🚀 Project Structure
+## 📡 Mission Brief
+This project is not just a static website; it's a **Single Page Application (SPA)** built to demonstrate full-spectrum engineering capabilities. It mimics a military/industrial control interface using modern web technologies.
 
-Inside of your Astro project, you'll see the following folders and files:
+## 🛠 Tech Stack & Architecture
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+### Core System
+- **Framework:** [Astro 5.0](https://astro.build) (Island Architecture for performance).
+- **Transitions:** `ClientRouter` for app-like, non-refreshing navigation.
+- **Styling:** TailwindCSS + Custom "Onion Layering" masking techniques.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+### Key Modules
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+#### 1. Mathematical Audio Synthesis 🔊
+Instead of loading heavy MP3 assets, the system generates UI sounds in real-time using the **Web Audio API**.
+- `Oscillators`: Sine waves for hover, Square waves for clicks.
+- `GainNodes`: Exponential ramping for envelope shaping.
+- **Benefit:** Zero load time, infinite variety.
 
-Any static assets, like images, can be placed in the `public/` directory.
+#### 2. Lidar Visualization (Three.js) 🌐
+A custom 3D point cloud background simulating aerial scanning.
+- Optimized geometry rotation (GPU offloading).
+- Responsive particle density based on viewport.
 
-## 🧞 Commands
+#### 3. Secure Terminal Emulator 💻
+A functional CLI (Command Line Interface) accessible via global hotkey (`~` or `F2`).
+- Supports commands: `help`, `whoami`, `sky_eye`, `sudo`.
+- Hidden "Capture The Flag" mechanics embedded in the mission reports.
 
-All commands are run from the root of the project, from a terminal:
+## 🚀 Deployment
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+The system is designed for Edge Deployment via **Vercel**.
 
-## 👀 Want to learn more?
+```bash
+# Clone repository
+git clone [https://github.com/slashdev-ops/system-override.git](https://github.com/slashdev-ops/system-override.git)
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+# Install dependencies
+npm install
+
+# Initialize local dev environment
+npm run dev
+
+© 2025 SlashDev Operations. All systems nominal.

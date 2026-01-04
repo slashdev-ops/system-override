@@ -9,7 +9,7 @@ const COMMANDS: Record<string, string> = {
   sudo: "PERMISSION DENIED. INCIDENT LOGGED.",
   ls: "ERROR: Encryption Key Required for /root access.",
   project_genesis: "STATUS: CLASSIFIED. LEVEL 5 CLEARANCE REQUIRED.",
-  sky_eye: "ACCESS GRANTED. DOWNLOADING SECRET_DATA... [██████████] 100%. LINK: https://github.com/TwojGithub"
+  sky_eye: "ACCESS GRANTED. DOWNLOADING SECRET_DATA... [██████████] 100%. LINK: https://github.com/slashdev-ops"
 };
 
 // GLOWNE OKNO TERMINALA
